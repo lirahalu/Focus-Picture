@@ -1,3 +1,7 @@
+$img-height:472px;
+$img-width:700px;
+$button-width:100px;
+$color-on:orangered;
 
 *{
   margin: 0;
@@ -10,21 +14,21 @@ body{
 #container{
   margin: 0 auto;
   position: relative;
-  height: 472px;
-  width: 700px;
+  height:$img-height;
+  width: $img-width;
   overflow: hidden;
   border: 1px solid black;
 
   #list{
-    height: 472px;
-    width: 4900px;
+    height: $img-height;
+    width: $img-width*7;
     position: absolute;
     z-index: 1;
-    left:-700px;
+    left:-$img-width;
 
     img{
-      height: 472px;
-      width: 700px;
+      height: $img-height;
+      width: $img-width;
       float: left;
     }
   }
@@ -32,10 +36,10 @@ body{
   #button{
     position: absolute;
     height: 20px;
-    width: 100px;
+    width: $button-width;
     z-index: 2;
     bottom: 20px;
-    left: 300px;
+    left: $img-width/2-$button-width;
 
     span{
       float: left;
@@ -48,7 +52,7 @@ body{
     }
 
     .on{
-      background-color: orangered;
+      background-color: $color-on;
     }
   }
 

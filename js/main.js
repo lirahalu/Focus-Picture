@@ -6,33 +6,32 @@ $(function () {
     var container = $("#container");
     var list = $("#list");
 
-    var prev=$("#prev");
-    var next=$("#next");
-    var num=1;//初始第1张
+    var prev = $("#prev");
+    var next = $("#next");
+    var num = 1;//初始第1张
 
-    var interval = 3000;//自动播放的间隔
+    var interval = 2000;//自动播放的间隔
     var timer;//自动播放定时器
 
-    var images=$("#list img");
-    var page=images.length-2;//获取有几张图片
+    var images = $("#list img");
+    var page = images.length - 2;//获取有几张图片
 
-    var width=parseInt($("#list img").css("width"));//获取图片的宽度
-
+    var width = parseInt($("#list img").css("width"));//获取图片的宽度
 
 
     for (var i = 1; i <= buttons.length; i++) {//为每个按钮赋予序号
-        buttons.eq(i-1).attr("index", i);
+        buttons.eq(i - 1).attr("index", i);
     }
     showButton();//显示按钮
 
-    function showButton(){//显示第i张图片第i个按钮就亮
-        buttons.eq(num-1).addClass("on")
+    function showButton() {//显示第i张图片第i个按钮就亮
+        buttons.eq(num - 1).addClass("on")
             .siblings().removeClass("on");
     }
 
     buttons.each(function () {
         $(this).bind("click", function () {//为每个按钮绑定单击事件
-            if (list.is(":animated") || $(this).attr("class")=="on") {//判断是否在进行动画或者单击的按钮处于on状态
+            if (list.is(":animated") || $(this).attr("class") == "on") {//判断是否在进行动画或者单击的按钮处于on状态
                 return;//跳出函数
             }
             var myIndex = parseInt($(this).attr("index"));//点击的按钮是第几个
@@ -47,44 +46,46 @@ $(function () {
 
     play();//自动播放
 
-    function animate(offset) {//点击箭头触发上一张，下一张
-        var lf = parseInt(list.css("left")) + offset;
-        if (offset>0) {
+    function animate(offset) {//动画函数
+        var lf = parseInt(list.css("left")) + offset;//需要处的位置
+        //重新计算left的位置
+        if (offset > 0) {
             offset = '+=' + offset;
         }
         else {
             offset = '-=' + Math.abs(offset);
         }
-        list.animate({"left": offset}, 300, function () {
-            if(lf > -200){
-                list.css("left", -width * page);
-            }
-            if(lf < (-width * page)) {
-                list.css("left", -width);
-            }
-        });
+        list.animate({"left": offset}, 300,
+            function () {//重置边缘图片位置
+                if (lf > -width) {
+                    list.css("left", -width * page);
+                }
+                if (lf < (-width * page)) {
+                    list.css("left", -width);
+                }
+            });
         showButton();
     }
 
-    function play() {
-        timer = setTimeout(function () {
-            next.trigger("click");
-            play();
+    function play() {//自动播放
+        timer = setInterval(function () {
+            next.trigger("click");//模拟单击向右按钮
         }, interval);
     }
+
     function stop() {
-        clearTimeout(timer);
+        clearInterval(timer);//取消自动播放
     }
 
     prev.click(function () {//减法
         if (list.is(":animated")) {
             return;
         }
-        num -=1;
-        if(num==0){
-            num=page;
+        num -= 1;
+        if (num == 0) {
+            num = page;
         }
-        animate(-width);
+        animate(width);
 
 
     });
@@ -92,9 +93,9 @@ $(function () {
         if (list.is(":animated")) {
             return;
         }
-        num +=1;
-        if(num==page+1){
-            num=1;
+        num += 1;
+        if (num == page + 1) {
+            num = 1;
         }
         animate(-width);
     });
